@@ -63,7 +63,7 @@ public:
 		return "double[" + to_string (myVal) + "]";
 	}	
 	string getType() {
-		return "Double";
+		return "NUMERIC";
 	}
 
 	bool semanticChecking(MyDB_CatalogPtr catalog, vector<pair<string, string>> tablesToProcess) {
@@ -89,7 +89,7 @@ public:
 	}
 
 	string getType() {
-		return "Int";
+		return "NUMERIC";
 	}
 
 	bool semanticChecking(MyDB_CatalogPtr catalog, vector<pair<string, string>> tablesToProcess) {
@@ -152,8 +152,10 @@ public:
 
 	bool semanticChecking(MyDB_CatalogPtr catalog, vector<pair<string, string>> tablesToProcess) {
 		bool found = false;
+		string tbl2process_1 = "";
 		for(auto table : tablesToProcess) {
 			if(table.second == tableName) {
+				tbl2process_1 = table.first;
 				found = true;
 				break;
 			}
@@ -163,7 +165,9 @@ public:
 			return false;
 		}
 		string attributeType;
-		bool attributesExist = catalog->getString(tableName+"."+attName+".type", attributeType);
+		bool attributesExist = catalog->getString(tbl2process_1+"."+attName+".type", attributeType);
+
+		// cout<<"attributeType of "<<attName<<" is "<<attributeType<<endl;
 
 		if(!attributesExist) {
 			cout << "Attribute " << attName << " does not exist in table " << tableName << ".\n";
@@ -211,11 +215,12 @@ public:
 			return false;
 		}
 		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
+			cout<<"rhs type is "<<rhs->getType()<<endl;
 			cout << "Operands of - operator must be numeric.\n";
 			return false;
 		}
 		if (lhs->getType() != rhs->getType()) {
-			cout << "Operands of - operator must have the same type.\n";
+			cout << "Operands of - operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		return true;
@@ -245,7 +250,7 @@ public:
 	}	
 
 	string getType() {
-		return "NUMERIC";
+		return attType;
 	}
 
 	bool semanticChecking(MyDB_CatalogPtr catalog, vector<pair<string, string>> tablesToProcess) {
@@ -253,7 +258,7 @@ public:
 			return false;
 		}
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of + operator must have the same type.\n";
+			cout << "Operands of + operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		if(lhs->getType() == "STRING") {
@@ -300,11 +305,11 @@ public:
 			return false;
 		}
 		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
-			cout << "Operands of * operator must be numeric.\n";
+			cout << "Operands of * operator must be numeric. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of * operator must have the same type.\n";
+			cout << "Operands of * operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		return true;
@@ -346,11 +351,11 @@ public:
 		}
 
 		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
-			cout << "Operands of / operator must be numeric.\n";
+			cout << "Operands of / operator must be numeric. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of / operator must have the same type.\n";
+			cout << "Operands of / operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		return true;
@@ -387,14 +392,14 @@ public:
 		}
 		
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of > operator must have the same type.\n";
+			cout << "Operands of > operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 
-		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
-			cout << "Operands of > operator must be numeric.\n";
-			return false;
-		}
+		// if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
+		// 	cout << "Operands of > operator must be numeric.
+		// 	return false;
+		// }
 		
 		return true;
 	}
@@ -430,14 +435,14 @@ public:
 		}
 		
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of < operator must have the same type.\n";
+			cout << "Operands of < operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 
-		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
-			cout << "Operands of < operator must be numeric.\n";
-			return false;
-		}
+		// if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
+		// 	cout << "Operands of < operator must be numeric.\n";
+		// 	return false;
+		// }
 		
 		return true;
 	}
@@ -474,14 +479,14 @@ public:
 		}
 		
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of != operator must have the same type.\n";
+			cout << "Operands of != operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 
-		if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
-			cout << "Operands of != operator must be numeric.\n";
-			return false;
-		}
+		// if(lhs->getType() != "NUMERIC" || rhs->getType() != "NUMERIC") {
+		// 	cout << "Operands of != operator must be numeric.\n";
+		// 	return false;
+		// }
 		
 		return true;
 	}
@@ -517,12 +522,12 @@ public:
 		}
 
 		if(lhs->getType() != "BOOL" || rhs->getType() != "BOOL") {
-			cout << "Operands of || operator must be boolean.\n";
+			cout << "Operands of || operator must be boolean. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of || operator must have the same type.\n";
+			cout << "Operands of || operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 		
@@ -560,14 +565,14 @@ public:
 		}
 		
 		if(lhs->getType() != rhs->getType()) {
-			cout << "Operands of == operator must have the same type.\n";
+			cout << "Operands of == operator must have the same type. lhs's type: "<<lhs->getType()<<" rhs's type: "<<rhs->getType()<<endl;
 			return false;
 		}
 
-		if(lhs->getType() != "NUMERIC" && lhs->getType() != "STRING" && lhs->getType() != "BOOL") {
-			cout << "Operands of == operator must be numeric, string or boolean.\n";
-			return false;
-		}
+		// if(lhs->getType() != "NUMERIC" && lhs->getType() != "STRING" && lhs->getType() != "BOOL") {
+		// 	cout << "Operands of == operator must be numeric, string or boolean.\n";
+		// 	return false;
+		// }
 		
 		return true;
 	}
@@ -600,7 +605,7 @@ public:
 			return false;
 		}
 		if(child->getType() != "BOOL") {
-			cout << "Operand of ! operator must be boolean.\n";
+			cout << "Operand of ! operator must be boolean. Operand's type: "<<child->getType()<<endl;
 			return false;
 		}
 		return true;
@@ -634,7 +639,7 @@ public:
 			return false;
 		}
 		if(child->getType() != "NUMERIC") {
-			cout << "Operand of sum operator must be numeric.\n";
+			cout << "Operand of sum operator must be numeric. Operand's type: "<<child->getType()<<endl;
 			return false;
 		}
 		return true;
@@ -668,7 +673,7 @@ public:
 			return false;
 		}
 		if(child->getType() != "NUMERIC") {
-			cout << "Operand of avg operator must be numeric.\n";
+			cout << "Operand of avg operator must be numeric. Operand's type: "<<child->getType()<<endl;
 			return false;
 		}
 		return true;

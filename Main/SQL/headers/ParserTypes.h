@@ -272,21 +272,20 @@ public:
 		}
 
 		// find if the value is in the group by clause
-		for (const auto& valueToSelect : valuesToSelect) {
-			if (valueToSelect->getType() == "IDENTIFIER") {
-				bool isInGroupingClauses = std::any_of(
-					groupingClauses.begin(), 
-					groupingClauses.end(), 
-					[&](const auto& groupingClause) {
-						return groupingClause->getType() == "IDENTIFIER" && 
-							valueToSelect->toString() == groupingClause->toString();
-					}
-				);
+		if (!groupingClauses.empty()) {
+			for (const auto& valueToSelect : valuesToSelect) {
+				if (valueToSelect->getType() == "IDENTIFIER") {
+					bool isInGroupingClauses = std::any_of(
+						groupingClauses.begin(), groupingClauses.end(),
+						[&](const std::shared_ptr<ExprTree>& groupingClause) {
+							return groupingClause->toString() == valueToSelect->toString() && groupingClause->getType() == "IDENTIFIER";
+						});
 
-				if (!isInGroupingClauses) {
-					std::cout << "Error: Selected attribute " << valueToSelect->toString() 
-							<< " is not in grouping attributes." << std::endl;
-					return;
+					if (!isInGroupingClauses) {
+						std::cout << "Error: Selected attribute " << valueToSelect->toString() 
+								<< " is not in grouping attributes." << std::endl;
+						return;
+					}
 				}
 			}
 		}
@@ -298,7 +297,7 @@ public:
 		for(const auto& element: {valuesToSelect, allDisjunctions, groupingClauses}) {
 			for(const auto& item: element) {
 				if(!item->semanticChecking(catalog, tablesToProcess)) {
-					cout << "Column " << item->toString() << " is not in the group by clause.\n";
+					// cout << "Column " << item->toString() << " is not in the group by clause.\n";
 					return;
 				}
 			}

@@ -13,6 +13,7 @@
         "limits": "cpp",
         "ratio": "cpp",
         "tuple": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "iostream": "cpp"
     }
 }
