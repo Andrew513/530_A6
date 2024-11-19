@@ -1,0 +1,17 @@
+1. Query is semantically correct.
+2. Selected attribute [s_s_suppkey] is not in grouping attributes.
+3. Operands of > operator must have the same type. lhs's type: NUMERIC rhs's type: STRING
+4. Operand of sum operator must be numeric. Operand's type: STRING
+5. Query is semantically correct.
+6. Operands of > operator must have the same type. lhs's type: NUMERIC rhs's type: STRING
+7. Attribute k_orderkey does not exist in table o.
+8. Table h is not in the from clause.
+9. Operands of - operator must be numeric.
+10. Table customers does not exist in the catalog.
+11. Query is semantically correct.
+12. Query is semantically correct.
+13. Attribute l_extendedprice does not exist in table c.
+14. Query is semantically correct.
+15. Operands of > operator must have the same type. lhs's type: NUMERIC rhs's type: STRING
+16. Query is semantically correct.
+17. Query is semantically correct.
