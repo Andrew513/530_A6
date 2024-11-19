@@ -7,6 +7,8 @@
 #include <vector>
 #include "MyDB_Catalog.h"
 
+#include <cstring>
+
 // create a smart pointer for database tables
 using namespace std;
 class ExprTree;
